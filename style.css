@@ -18,23 +18,95 @@
     /* invalid word */
     --invalid-word-border: #ff0000;
 }
+
+/* theme switcher */
+.theme-switcher {
+    position: absolute;
+    display: inline-block;
+    width: 3.7rem;
+    height: 2.1rem;
+  }
+  
+  .theme-switcher input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 1vh;
+    right: -1vw;
+    left: 1vw;
+    bottom: -1vh;
+    border-radius: 34px;
+    border: 1px solid #777;
+    background-color: #333;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+    border-radius: 50%;
+    content: "🌞";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #f1f1f1;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 1px 1px 1px #000;
+  }
+  
+  input:checked + .slider:before {
+    content: "🌚";
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+/* theme switcher */
+
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+    transition: all 0.5s ease;
 }
-/* USE VMIN for font-sizes and icons, and vh or vw for widths, heights, paddings, margins, and positions */
-#main.light {
+/* Use vmin for font-sizes and icons, and vh or vw for widths, heights, paddings, margins, and positions */
+#main {
+    position: relative;
     height: 100vh;
     width: 100vw;
+}
+#main.light {
     background-color: var(--light-theme-background);
     color: var(--light-theme-text);
 }
 #main.dark {
-    height: 100vh;
-    width: 100vw;
     background-color: var(--dark-theme-background);
     color: var(--dark-theme-text);
+}
+#main .theme {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 #main .container {
     height: 100%;
@@ -45,13 +117,16 @@
     align-items: center;
 }
 #main .container h1 {
-    /* font-size: 5vmin; */
-    /* font-weight: 400; */
+    font-size: 10vmin;
+    font-weight: 400;
     text-align: center;
 }
 #main .container .input {
     height: max-content;
     width: max-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 #main .container .input .rows {
     height: max-content;
@@ -63,7 +138,22 @@
     flex-shrink: 0;
 }
 #main .container .input .rows .columns {
-    height: 5vh;
-    width: 5vw;
-    border: 1px solid var(--light-theme-border);
+    height: 10vmin;
+    width: 10vmin;
+    margin: 1vmin;
+    font-size: 7vmin;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--light-theme-border);
 }
+
+@media screen and (max-width: 600px) {
+    #main .container .input .rows .columns {
+        height: 15vmin;
+        width: 15vmin;
+        margin: 1vmin;
+        font-size: 10vmin;
+    }
+}
+    
