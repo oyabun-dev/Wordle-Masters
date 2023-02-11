@@ -83,7 +83,7 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    transition: all 0.5s ease;
+    transition: all .4s ease;
 }
 /* Use vmin for font-sizes and icons, and vh or vw for widths, heights, paddings, margins, and positions */
 #main {
