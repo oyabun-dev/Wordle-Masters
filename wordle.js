@@ -1,10 +1,13 @@
 const rows = document.querySelectorAll('.rows'); // Nodelist qui représente les lignes ou niveaux
 const rowsArray = Array.from(rows); //  on crée un tableau à partir de rows, ils sont 6 et sont indexés de 0 à 5
+const input = document.querySelector('.input'); // on récupère l'input pour le thème sombre
+const columns = document.querySelectorAll('.columns'); // on récupère les colonnes pour le thème sombre
 var wordBuffer; var isInputValidated; var isValidated; var currentRowIndex;
 
-init();
+init(); // on initialise le jeu
 
-document.addEventListener('keyup', fillRow);
+document.querySelector('#switch').addEventListener('click', darkMode); // on ajoute un listener sur le bouton pour changer de thème
+document.addEventListener('keyup', fillRow); // on ajoute un listener sur le document pour remplir les lignes
 
 async function fillRow(e){ // à chaque fois qu'une touche est tapée
 
@@ -31,25 +34,28 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
                     column.style.backgroundColor = "limegreen";
                     column.style.color = "white";
                     column.style.borderColor = "green";
-                }); 
-                alert("Good job, you win! 🎉🎉🎉");
+                });
+                setTimeout(() => { // on attend 2 secondes
+                    alert("Good job, le mot du jour était, " + word.toUpperCase() + ", you win! 🎉🎉🎉"); // on affiche une alerte
+                    init(); // on réinitialise le jeu
+                }, 1000);
             } else { // si ce n'est pas le bon mot alors
                 for (let i = 0; i < wordBuffer.length; i++) { // on parcours le mot saisi
                     for (let j = 0; j < word.length; j++) { // on parcours en même temps le mot du jour
                         if (wordBuffer[i] == word[j]) { // si on trouve des caractères se ressemblant alors, on update le background en orange
                             columns[i].style.backgroundColor = "orange";
                             columns[i].style.color = "white";
-                            columns[i].style.borderColor = "#f5f5f5";
+                            columns[i].style.borderColor = "#gray";
                             if (i == j) { // si en plus de se ressembler ils sont à la même position, on update le background en vert
                                 columns[i].style.backgroundColor = "limegreen";
                                 columns[i].style.color = "white";
-                                columns[i].style.borderColor = "#f5f5f5";
+                                columns[i].style.borderColor = "#gray";
                             }
                             break; // sans le break, toutes les réponse seront coloriés en rouge il attend que j se termine pour changer le background alors que nous on veut un update à chaque itération
                         } else { // sinon, on update le background en rouge pour les mauvaise réponses
                             columns[i].style.backgroundColor = "red";
                             columns[i].style.color = "white";
-                            columns[i].style.borderColor = "green";
+                            columns[i].style.borderColor = "gray";
                         }
                         
                     }
@@ -106,7 +112,22 @@ function checkWord(wordBuffer, word) {
 function init() {
     wordBuffer = ""; // on vide le buffer
     wordArray = []; // on vide le tableau
-    currentRowIndex = 0;
-    isInputValidated = false;
-    isValidated = false; 
+    currentRowIndex = 0; // on remet l'index de la ligne à 0
+    isInputValidated = false; // on remet la validation de la saisie à false
+    isValidated = false;  // on remet la validation du mot à false
+}
+
+// Fonction qui permet de changer le thème
+function darkMode() {
+    document.querySelector('#main').classList.toggle('dark'); // on ajoute ou on supprime la classe 'dark' à l'élément 'main'
+    input.classList.toggle('dark'); // on ajoute ou on supprime la classe 'dark' à l'élément 'input'
+    if (input.classList.contains('dark')) { // si l'input contient la classe 'dark' alors
+        columns.forEach(column => { // on parcours les colonnes pour changer la couleur de la bordure
+            column.style.border = '1px solid var(--dark-theme-border)';
+        })
+    } else { // sinon on remet la couleur de la bordure par défaut
+        columns.forEach(column => {
+            column.style.border = '1px solid var(--light-theme-border)';
+        })
+    }
 }
