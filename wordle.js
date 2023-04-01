@@ -141,3 +141,21 @@ function darkMode() {
         })
     }
 }
+
+// petit bonus
+
+// Vérifie si l'utilisateur utilise un appareil mobile
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+// Sélectionne tous les champs de saisie
+const inputs = document.querySelectorAll('input, textarea');
+
+// Ajoute un gestionnaire d'événement pour chaque champ de saisie
+inputs.forEach(input => {
+  input.addEventListener('focus', () => {
+    if (isMobile) {
+      // Affiche le clavier si l'utilisateur utilise un appareil mobile
+      input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+});
