@@ -142,6 +142,7 @@
     width: 10vmin;
     margin: 1vmin;
     font-size: 7vmin;
+    font-weight: bolder;
     display: flex;
     justify-content: center;
     align-items: center;

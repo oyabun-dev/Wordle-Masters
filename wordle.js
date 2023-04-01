@@ -2,7 +2,7 @@ const rows = document.querySelectorAll('.rows'); // Nodelist qui représente les
 const rowsArray = Array.from(rows); //  on crée un tableau à partir de rows, ils sont 6 et sont indexés de 0 à 5
 const input = document.querySelector('.input'); // on récupère l'input pour le thème sombre
 const columns = document.querySelectorAll('.columns'); // on récupère les colonnes pour le thème sombre
-var wordBuffer; var isInputValidated; var isValidated; var currentRowIndex;
+var wordBuffer; var isInputValidated; var isWordOfTheDay; var currentRowIndex;
 
 init(); // on initialise le jeu
 
@@ -21,8 +21,15 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
         wordBuffer = clearLast(wordBuffer); // alors on efface la dernière lettre saise
     }
     if (letterBuffer === 'Enter') { // si la touche saisie est 'Enter' alors on vérifie la réponse donnée
+        const data = await fetch('https://words.dev-apis.com/validate-word', {
+            method: 'POST',
+            body : JSON.stringify({ word: wordBuffer })
+        }); 
+        const validate = await data.json();
+        const isValidWord = validate.validWord;
+        console.log(isValidWord);
         isInputValidated = checkRow(wordBuffer, isInputValidated); // on donne la valeur de retour qui est un booléen a isInputValidated
-        if (isInputValidated) { // si le input est validé alors
+        if (isInputValidated && isValidWord) { // si le input est validé alors
             const promise = await fetch('https://words.dev-apis.com/word-of-the-day');
             const wordObject = await promise.json();
             const word = wordObject.word;
@@ -31,31 +38,32 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
             if (wordMatch){ // si c'est le bon mot alors
                 document.removeEventListener('keyup', fillRow); // on supprime le listener
                 columns.forEach(column => { // on update le background en vert si on trouve
-                    column.style.backgroundColor = "limegreen";
+                    column.style.backgroundColor = "#538d4e";
                     column.style.color = "white";
-                    column.style.borderColor = "green";
+                    column.style.border = "none";
                 });
                 setTimeout(() => { // on attend 2 secondes
-                    alert("Good job, le mot du jour était, " + word.toUpperCase() + ", you win! 🎉🎉🎉"); // on affiche une alerte
+                    alert("Good job, the word of the day was, " + word.toUpperCase() + ", you win! 🎉🎉🎉"); // on affiche une alerte
                     init(); // on réinitialise le jeu
                 }, 1000);
             } else { // si ce n'est pas le bon mot alors
                 for (let i = 0; i < wordBuffer.length; i++) { // on parcours le mot saisi
                     for (let j = 0; j < word.length; j++) { // on parcours en même temps le mot du jour
                         if (wordBuffer[i] == word[j]) { // si on trouve des caractères se ressemblant alors, on update le background en orange
-                            columns[i].style.backgroundColor = "orange";
+                            columns[i].style.backgroundColor = "#b59f3b";
                             columns[i].style.color = "white";
-                            columns[i].style.borderColor = "#gray";
+                            columns[i].style.border = "none";
+
                             if (i == j) { // si en plus de se ressembler ils sont à la même position, on update le background en vert
-                                columns[i].style.backgroundColor = "limegreen";
+                                columns[i].style.backgroundColor = "#538d4e";
                                 columns[i].style.color = "white";
-                                columns[i].style.borderColor = "#gray";
+                                columns[i].style.border = "none";
                             }
                             break; // sans le break, toutes les réponse seront coloriés en rouge il attend que j se termine pour changer le background alors que nous on veut un update à chaque itération
                         } else { // sinon, on update le background en rouge pour les mauvaise réponses
-                            columns[i].style.backgroundColor = "red";
+                            columns[i].style.backgroundColor = "#3a3a3c";
                             columns[i].style.color = "white";
-                            columns[i].style.borderColor = "gray";
+                            columns[i].style.border = "none";
                         }
                         
                     }
@@ -65,6 +73,8 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
                 currentRowIndex++; // et on passe à la ligne suivante
             
             }
+        } else {
+            alert('not a word 😡😡'); // si la réponse n'est pas valide, on affiche une alerte
         }
     }
     // let wordArray = wordBuffer.split(""); // convertie la chaîne de caractère en tableau de caractères.
@@ -104,8 +114,8 @@ function checkRow(wordBuffer, isInputValidated){
 // Validation du mot de 5 caractère saisi
 function checkWord(wordBuffer, word) {
 
-    isValidated = (wordBuffer === word)? true : false; // si le mot saisi et le mot à deviner sont les mêmes, alors isValidated est vraie sinon elle est fausse 
-    return isValidated; // on retourne la valeur de isValidated
+    isWordOfTheDay = (wordBuffer === word)? true : false; // si le mot saisi et le mot à deviner sont les mêmes, alors isValidated est vraie sinon elle est fausse 
+    return isWordOfTheDay; // on retourne la valeur de isValidated
 
 }
 
@@ -114,7 +124,7 @@ function init() {
     wordArray = []; // on vide le tableau
     currentRowIndex = 0; // on remet l'index de la ligne à 0
     isInputValidated = false; // on remet la validation de la saisie à false
-    isValidated = false;  // on remet la validation du mot à false
+    isWordOfTheDay = false;  // on remet la validation du mot à false
 }
 
 // Fonction qui permet de changer le thème
