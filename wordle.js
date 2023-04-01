@@ -144,6 +144,7 @@ function darkMode() {
 
 // petit bonus
 
+
 // ouvrir directement le clavier mobile
 function openKeyboard() {
     input.focus();
