@@ -35,7 +35,7 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
             const word = wordObject.word;
             const wordMatch = checkWord(wordBuffer, word); // on passe a 'wordMatch' le booléen de retour de checkWord() qui vérifie si c'est le bon mot
             const columns = Array.from(rowsArray[currentRowIndex].children) // Crée un tableau à partir des colonnes de chaque ligne pour changer la couleur selon la validité de la réponse
-            let msg = ""; // on crée un message vide
+            var msg = ""; // on crée un message vide
             if (wordMatch){ // si c'est le bon mot alors
                 document.removeEventListener('keyup', fillRow); // on supprime le listener
                 columns.forEach(column => { // on update le background en vert si on trouve
@@ -68,7 +68,6 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
                     }
                 }
                 wordBuffer = ""; // on vide le buffer
-                wordArray = []; // on vide le tableau
                 currentRowIndex++; // et on passe à la ligne suivante
                 
                 if (currentRowIndex === 6) { // si on est à la dernière ligne alors
@@ -128,7 +127,6 @@ function checkWord(wordTemp, word) {
 function init() {
 
     wordBuffer = ""; // on vide le buffer
-    wordArray = []; // on vide le tableau
     currentRowIndex = 0; // on remet l'index de la ligne à 0
     isInputValidated = false; // on remet la validation de la saisie à false
     isWordOfTheDay = false;  // on remet la validation du mot à false
