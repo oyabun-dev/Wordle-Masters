@@ -13,7 +13,7 @@ document.addEventListener('keyup', fillRow); // on ajoute un listener sur le doc
 // Fonction appelée à chaque fois qu'une touche est tapée
 async function fillRow(e){ // à chaque fois qu'une touche est tapée
 
-    let letterBuffer = e.key; //cette touche est gardée dans letterBuffer
+    const letterBuffer = e.key; //cette touche est gardée dans letterBuffer
     if(isLetter(letterBuffer) && wordBuffer.length < 5) { // on vérifie si cette touche est une lettre et que la longueur du mot ne dépasse pas 5 lettres
         wordBuffer += letterBuffer.toLowerCase() // si oui on le concaténe à l'ancienne valeur de word buffer
         rowsArray[currentRowIndex].children[wordBuffer.length - 1].textContent = letterBuffer.toUpperCase(); // on remplit en même temps la colonne correspondante
@@ -35,6 +35,7 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
             const word = wordObject.word;
             const wordMatch = checkWord(wordBuffer, word); // on passe a 'wordMatch' le booléen de retour de checkWord() qui vérifie si c'est le bon mot
             const columns = Array.from(rowsArray[currentRowIndex].children) // Crée un tableau à partir des colonnes de chaque ligne pour changer la couleur selon la validité de la réponse
+            let msg = ""; // on crée un message vide
             if (wordMatch){ // si c'est le bon mot alors
                 document.removeEventListener('keyup', fillRow); // on supprime le listener
                 columns.forEach(column => { // on update le background en vert si on trouve
@@ -103,15 +104,15 @@ function clearLast(word) {
 }
 
 // Contrôle de saisie: vérifie si le mot fait 5 lettres et existe sinon il renvoie une erreur.
-function checkRow(wordTemp, isInputValidated){
+function checkRow(wordTemp, validateInput){
 
     if (wordTemp.length < 5) { // on vérifie si il a remplie tous les colones, si non
         alert('not enough letters'); // on renvoie une alerte notifiant qu le nombre de lettre saisies est incomplet
-        isInputValidated = false; // et on infirme la validation
+        validateInput = false; // et on infirme la validation
     } else { // si on a 5 lettres alors
-        isInputValidated = true; // on valide
+        validateInput = true; // on valide
     }
-    return isInputValidated; // on retourne la valeur de isInputValidated
+    return validateInput; // on retourne la valeur de isInputValidated
 
 }
 
