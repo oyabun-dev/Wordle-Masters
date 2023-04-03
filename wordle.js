@@ -47,22 +47,16 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
             } else { // si ce n'est pas le bon mot alors
                 for (let i = 0; i < wordBuffer.length; i++) { // on parcours le mot saisi
                     for (let j = 0; j < word.length; j++) { // on parcours en même temps le mot du jour
-                        if (wordBuffer[i] == word[j]) { // si on trouve des caractères se ressemblant alors, on update le background en orange
-                            columns[i].style.backgroundColor = "#b59f3b";
-                            columns[i].style.color = "white";
-                            columns[i].style.border = "none";
+                        if (wordBuffer[i] == word[j]) { // si on trouve des caractères se ressemblant alors
+                            changeStyle(columns[i], "#b59f3b", "white", "none"); // on update le style de la colonne avec une couleur orange
                             columns[i] = null; // on supprime la colonne pour ne pas la reprendre dans la boucle
 
-                            if (i == j) { // si en plus de se ressembler ils sont à la même position, on update le background en vert
-                                columns[i].style.backgroundColor = "#538d4e";
-                                columns[i].style.color = "white";
-                                columns[i].style.border = "none";
+                            if (i == j) { // si en plus de se ressembler ils sont à la même position
+                                changeStyle(columns[i], "#538d4e", "white", "none"); // on update le style de la colonne avec une couleur verte
                             }
                             break; // sans le break, toutes les réponse seront coloriés en rouge il attend que j se termine pour changer le background alors que nous on veut un update à chaque itération
-                        } else { // sinon, on update le background en rouge pour les mauvaise réponses
-                            columns[i].style.backgroundColor = "#3a3a3c";
-                            columns[i].style.color = "white";
-                            columns[i].style.border = "none";
+                        } else { 
+                            changeStyle(columns[i], "#3a3a3c", "white", "none"); // on update le style de la colonne avec une couleur grise foncée
                         }
                         
                     }
@@ -145,6 +139,12 @@ function darkMode() {
             column.style.border = '1px solid var(--light-theme-border)';
         })
     }
+}
+
+function changeStyle(element, bgackgroundColor, color, border) {
+    element.style.backgroundColor = bgackgroundColor;
+    element.style.color = color;
+    element.style.border = border;
 }
 
 // petit bonus pour ouvrir le clavier mobile
