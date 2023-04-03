@@ -21,17 +21,16 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
         wordBuffer = clearLast(wordBuffer); // alors on efface la dernière lettre saise
     }
     if (letterBuffer === 'Enter') { // si la touche saisie est 'Enter' alors on vérifie la réponse donnée
-        const data = await fetch('https://words.dev-apis.com/validate-word', {
+        const data = await fetch('https://words.dev-apis.com/validate-word', { // on vérifie si le mot saisi est valide
             method: 'POST',
             body : JSON.stringify({ word: wordBuffer })
         }); 
-        const validate = await data.json();
-        const isValidWord = validate.validWord;
-        console.log(isValidWord);
+        const validate = await data.json(); // on récupère le résultat de la vérification
+        const isValidWord = validate.validWord; // on récupère la valeur de validWord
         isInputValidated = checkRow(wordBuffer, isInputValidated); // on donne la valeur de retour qui est un booléen a isInputValidated
         if (isInputValidated && isValidWord) { // si le input est validé alors
-            const promise = await fetch('https://words.dev-apis.com/word-of-the-day');
-            const wordObject = await promise.json();
+            const promise = await fetch('https://words.dev-apis.com/word-of-the-day'); // on récupère le mot du jour
+            const wordObject = await promise.json(); 
             const word = wordObject.word;
             let wordMatch = checkWord(wordBuffer, word); // on passe a 'wordMatch' le booléen de retour de checkWord() qui vérifie si c'est le bon mot
             let columns = Array.from(rowsArray[currentRowIndex].children) // Crée un tableau à partir des colonnes de chaque ligne pour changer la couleur selon la validité de la réponse
@@ -42,7 +41,7 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
                     column.style.color = "white";
                     column.style.border = "none";
                 });
-                setTimeout(() => { // on attend 2 secondes
+                setTimeout(() => { // on attend 1 secondes
                     alert("Good job, the word of the day was, " + word.toUpperCase() + ", you win! 🎉🎉🎉"); // on affiche une alerte
                     init(); // on réinitialise le jeu
                 }, 1000);
@@ -53,6 +52,7 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
                             columns[i].style.backgroundColor = "#b59f3b";
                             columns[i].style.color = "white";
                             columns[i].style.border = "none";
+                            columns[i] = null; // on supprime la colonne pour ne pas la reprendre dans la boucle
 
                             if (i == j) { // si en plus de se ressembler ils sont à la même position, on update le background en vert
                                 columns[i].style.backgroundColor = "#538d4e";
@@ -71,15 +71,19 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
                 wordBuffer = ""; // on vide le buffer
                 wordArray = []; // on vide le tableau
                 currentRowIndex++; // et on passe à la ligne suivante
-            
+                
+                if (currentRowIndex == 6) { // si on est à la dernière ligne alors
+                    document.removeEventListener('keyup', fillRow); // on supprime le listener
+                    setTimeout(() => { // on attend 1 secondes
+                        alert("You lose, the word of the day was, " + word.toUpperCase() + " 😡😡😡"); // on affiche une alerte
+                        init(); // on réinitialise le jeu
+                    }, 1000);
+                }
             }
         } else {
             alert('not a word 😡😡'); // si la réponse n'est pas valide, on affiche une alerte
         }
     }
-    // let wordArray = wordBuffer.split(""); // convertie la chaîne de caractère en tableau de caractères.
-
-    // return wordArray; // on retourne le tableau et la valeur de retour de la vérification
 
 }
 
@@ -119,6 +123,7 @@ function checkWord(wordBuffer, word) {
 
 }
 
+// Fonction qui permet de réinitialiser le jeu
 function init() {
     wordBuffer = ""; // on vide le buffer
     wordArray = []; // on vide le tableau
@@ -142,8 +147,7 @@ function darkMode() {
     }
 }
 
-// petit bonus
-
+// petit bonus pour ouvrir le clavier mobile
 
 // ouvrir directement le clavier mobile
 function openKeyboard() {
