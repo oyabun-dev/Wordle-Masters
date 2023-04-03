@@ -141,8 +141,8 @@ function darkMode() {
     }
 }
 
-function changeStyle(element, bgackgroundColor, color, border) {
-    element.style.backgroundColor = bgackgroundColor;
+function changeStyle(element, backgroundColor, color, border) {
+    element.style.backgroundColor = backgroundColor;
     element.style.color = color;
     element.style.border = border;
 }
