@@ -49,7 +49,7 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
                     for (let j = 0; j < word.length; j++) { // on parcours en même temps le mot du jour
                         if (wordBuffer[i] == word[j]) { // si on trouve des caractères se ressemblant alors
                             changeStyle(columns[i], "#b59f3b", "white", "none"); // on update le style de la colonne avec une couleur orange
-                            columns[i] = null; // on supprime la colonne pour ne pas la reprendre dans la boucle
+                            // columns[i] = null; // on supprime la colonne pour ne pas la reprendre dans la boucle
 
                             if (i == j) { // si en plus de se ressembler ils sont à la même position
                                 changeStyle(columns[i], "#538d4e", "white", "none"); // on update le style de la colonne avec une couleur verte
