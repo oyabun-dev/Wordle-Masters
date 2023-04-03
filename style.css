@@ -19,6 +19,9 @@
     --invalid-word-border: #ff0000;
 }
 
+input.for_keyboard {
+  display: none;
+}
 /* theme switcher */
 .theme-switcher {
     position: absolute;

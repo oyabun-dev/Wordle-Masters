@@ -16,7 +16,6 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
         rowsArray[currentRowIndex].children[wordBuffer.length - 1].textContent = letterBuffer.toUpperCase(); // on remplit en même temps la colonne correspondante
     }
     if (letterBuffer === 'Backspace') { // on vérifie si la touche tapée est 'Backspace'
-        console.log('there');
         wordBuffer = clearLast(wordBuffer); // alors on efface la dernière lettre saise
     }
     if (letterBuffer === 'Enter') { // si la touche saisie est 'Enter' alors on vérifie la réponse donnée
@@ -155,7 +154,8 @@ function changeStyle(element, backgroundColor, color, border) {
 
 // ouvrir directement le clavier mobile
 function openKeyboard() {
-    const input = document.querySelector('input');
+    const input = document.querySelector('.for_keyboard');
     input.focus();
+    console.log('opened');
 }
 openKeyboard();
