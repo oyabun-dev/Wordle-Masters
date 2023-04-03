@@ -1,6 +1,5 @@
 const rows = document.querySelectorAll('.rows'); // Nodelist qui représente les lignes ou niveaux
 const rowsArray = Array.from(rows); //  on crée un tableau à partir de rows, ils sont 6 et sont indexés de 0 à 5
-const input = document.querySelector('.input'); // on récupère l'input pour le thème sombre
 const columns = document.querySelectorAll('.columns'); // on récupère les colonnes pour le thème sombre
 let wordBuffer; let isInputValidated; let isWordOfTheDay; let currentRowIndex;
 
@@ -135,6 +134,7 @@ function init() {
 // Fonction qui permet de changer le thème
 function darkMode() {
     document.querySelector('#main').classList.toggle('dark'); // on ajoute ou on supprime la classe 'dark' à l'élément 'main'
+    const input = document.querySelector('.input'); // on récupère l'input pour le thème sombre
     input.classList.toggle('dark'); // on ajoute ou on supprime la classe 'dark' à l'élément 'input'
     if (input.classList.contains('dark')) { // si l'input contient la classe 'dark' alors
         columns.forEach(column => { // on parcours les colonnes pour changer la couleur de la bordure
