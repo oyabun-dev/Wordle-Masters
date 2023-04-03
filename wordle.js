@@ -45,15 +45,19 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
                     init(); // on réinitialise le jeu
                 }, 1000);
             } else { // si ce n'est pas le bon mot alors
+                let temp = word.split(""); // on crée un tableau temporaire avec les lettres du mot du jour
                 for (let i = 0; i < wordBuffer.length; i++) { // on parcours le mot saisi
                     for (let j = 0; j < word.length; j++) { // on parcours en même temps le mot du jour
-                        if (wordBuffer[i] == word[j]) { // si on trouve des caractères se ressemblant alors
-                            columns[i] = null; // on supprime la colonne pour ne pas la reprendre dans la boucle
+                        if (wordBuffer[i] == temp[j]) { // si on trouve des caractères se ressemblant alors
+                            
                             changeStyle(columns[i], "#b59f3b", "white", "none"); // on update le style de la colonne avec une couleur orange
-
+                            
                             if (i == j) { // si en plus de se ressembler ils sont à la même position
                                 changeStyle(columns[i], "#538d4e", "white", "none"); // on update le style de la colonne avec une couleur verte
                             }
+            
+                            temp[j] = ""; // on supprime la colonne pour ne pas la reprendre dans la boucle
+
                             break; // sans le break, toutes les réponse seront coloriés en rouge il attend que j se termine pour changer le background alors que nous on veut un update à chaque itération
                         } else { 
                             changeStyle(columns[i], "#3a3a3c", "white", "none"); // on update le style de la colonne avec une couleur grise foncée
@@ -151,6 +155,7 @@ function changeStyle(element, backgroundColor, color, border) {
 
 // ouvrir directement le clavier mobile
 function openKeyboard() {
+    const input = document.querySelector('input');
     input.focus();
 }
 openKeyboard();
