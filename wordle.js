@@ -2,7 +2,7 @@ const rows = document.querySelectorAll('.rows'); // Nodelist qui représente les
 const rowsArray = Array.from(rows); //  on crée un tableau à partir de rows, ils sont 6 et sont indexés de 0 à 5
 const input = document.querySelector('.input'); // on récupère l'input pour le thème sombre
 const columns = document.querySelectorAll('.columns'); // on récupère les colonnes pour le thème sombre
-var wordBuffer; var isInputValidated; var isWordOfTheDay; var currentRowIndex;
+let wordBuffer; let isInputValidated; let isWordOfTheDay; let currentRowIndex;
 
 init(); // on initialise le jeu
 
