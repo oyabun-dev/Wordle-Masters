@@ -1,7 +1,6 @@
 const rows = document.querySelectorAll('.rows'); // Nodelist qui représente les lignes ou niveaux
 const rowsArray = Array.from(rows); //  on crée un tableau à partir de rows, ils sont 6 et sont indexés de 0 à 5
 let wordBuffer = ""; // on crée un buffer pour stocker les lettres saisies
-let wordArray = []; // on crée un tableau pour stocker les mots saisis
 let isInputValidated = false; // on crée un booléen pour vérifier si le mot saisi est valide
 let isWordOfTheDay = false; // on crée un booléen pour vérifier si le mot saisi est le mot du jour
 let currentRowIndex = 0; // on crée un index pour savoir sur quelle ligne on se trouve
@@ -14,7 +13,7 @@ document.addEventListener('keyup', fillRow); // on ajoute un listener sur le doc
 // Fonction appelée à chaque fois qu'une touche est tapée
 async function fillRow(e){ // à chaque fois qu'une touche est tapée
 
-    letterBuffer = e.key; //cette touche est gardée dans letterBuffer
+    let letterBuffer = e.key; //cette touche est gardée dans letterBuffer
     if(isLetter(letterBuffer) && wordBuffer.length < 5) { // on vérifie si cette touche est une lettre et que la longueur du mot ne dépasse pas 5 lettres
         wordBuffer += letterBuffer.toLowerCase() // si oui on le concaténe à l'ancienne valeur de word buffer
         rowsArray[currentRowIndex].children[wordBuffer.length - 1].textContent = letterBuffer.toUpperCase(); // on remplit en même temps la colonne correspondante
@@ -71,7 +70,7 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
                 wordArray = []; // on vide le tableau
                 currentRowIndex++; // et on passe à la ligne suivante
                 
-                if (currentRowIndex == 6) { // si on est à la dernière ligne alors
+                if (currentRowIndex === 6) { // si on est à la dernière ligne alors
                     document.removeEventListener('keyup', fillRow); // on supprime le listener
                     setTimeout(() => { // on attend 1 secondes
                         msg = `You lose, the word of the day was, ${word.toUpperCase()} 😡😡😡`; // on crée un message d'erreur
