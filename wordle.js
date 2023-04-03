@@ -4,6 +4,7 @@ let wordBuffer = ""; // on crée un buffer pour stocker les lettres saisies
 let wordArray = []; // on crée un tableau pour stocker les mots saisis
 let isInputValidated = false; // on crée un booléen pour vérifier si le mot saisi est valide
 let isWordOfTheDay = false; // on crée un booléen pour vérifier si le mot saisi est le mot du jour
+let currentRowIndex = 0; // on crée un index pour savoir sur quelle ligne on se trouve
 
 init(); // on initialise le jeu
 
@@ -38,7 +39,7 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
             if (wordMatch){ // si c'est le bon mot alors
                 document.removeEventListener('keyup', fillRow); // on supprime le listener
                 columns.forEach(column => { // on update le background en vert si on trouve
-                    changeStyle(columns[i], "#538d4e", "white", "none"); // on update le style de la colonne avec une couleur verte
+                    changeStyle(column, "#538d4e", "white", "none"); // on update le style de la colonne avec une couleur verte
                 });
                 setTimeout(() => { // on attend 1 secondes
                     msg = `Good job, the word of the day was, ${word.toUpperCase()} 🎉🎉🎉`; // on crée un message de succès
@@ -80,7 +81,7 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
                 }
             }
         } else {
-            msg = `not a word 😡😡`; // on crée un message d'erreur
+            msg = "not a word 😡😡"; // on crée un message d'erreur
             alert(msg); // si la réponse n'est pas valide, on affiche une alerte contenant le message d'erreur
         }
     }
