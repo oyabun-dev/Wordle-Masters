@@ -38,9 +38,7 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
             if (wordMatch){ // si c'est le bon mot alors
                 document.removeEventListener('keyup', fillRow); // on supprime le listener
                 columns.forEach(column => { // on update le background en vert si on trouve
-                    column.style.backgroundColor = "#538d4e";
-                    column.style.color = "white";
-                    column.style.border = "none";
+                    changeStyle(columns[i], "#538d4e", "white", "none"); // on update le style de la colonne avec une couleur verte
                 });
                 setTimeout(() => { // on attend 1 secondes
                     msg = `Good job, the word of the day was, ${word.toUpperCase()} 🎉🎉🎉`; // on crée un message de succès
