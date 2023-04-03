@@ -1,3 +1,4 @@
+var msg = ""; // on crée un message vide
 const rows = document.querySelectorAll('.rows'); // Nodelist qui représente les lignes ou niveaux
 const rowsArray = Array.from(rows); //  on crée un tableau à partir de rows, ils sont 6 et sont indexés de 0 à 5
 let wordBuffer = ""; // on crée un buffer pour stocker les lettres saisies
@@ -35,7 +36,6 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
             const word = wordObject.word;
             const wordMatch = checkWord(wordBuffer, word); // on passe a 'wordMatch' le booléen de retour de checkWord() qui vérifie si c'est le bon mot
             const columns = Array.from(rowsArray[currentRowIndex].children) // Crée un tableau à partir des colonnes de chaque ligne pour changer la couleur selon la validité de la réponse
-            var msg = ""; // on crée un message vide
             if (wordMatch){ // si c'est le bon mot alors
                 document.removeEventListener('keyup', fillRow); // on supprime le listener
                 columns.forEach(column => { // on update le background en vert si on trouve
