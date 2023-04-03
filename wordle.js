@@ -1,13 +1,16 @@
 const rows = document.querySelectorAll('.rows'); // Nodelist qui représente les lignes ou niveaux
 const rowsArray = Array.from(rows); //  on crée un tableau à partir de rows, ils sont 6 et sont indexés de 0 à 5
-const columns = document.querySelectorAll('.columns'); // on récupère les colonnes pour le thème sombre
-let wordBuffer; let isInputValidated; let isWordOfTheDay; let currentRowIndex;
+let wordBuffer = ""; // on crée un buffer pour stocker les lettres saisies
+let wordArray = []; // on crée un tableau pour stocker les mots saisis
+let isInputValidated = false; // on crée un booléen pour vérifier si le mot saisi est valide
+let isWordOfTheDay = false; // on crée un booléen pour vérifier si le mot saisi est le mot du jour
 
 init(); // on initialise le jeu
 
 document.querySelector('#switch').addEventListener('click', darkMode); // on ajoute un listener sur le bouton pour changer de thème
 document.addEventListener('keyup', fillRow); // on ajoute un listener sur le document pour remplir les lignes
 
+// Fonction appelée à chaque fois qu'une touche est tapée
 async function fillRow(e){ // à chaque fois qu'une touche est tapée
 
     letterBuffer = e.key; //cette touche est gardée dans letterBuffer
@@ -30,8 +33,8 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
             const promise = await fetch('https://words.dev-apis.com/word-of-the-day'); // on récupère le mot du jour
             const wordObject = await promise.json(); 
             const word = wordObject.word;
-            let wordMatch = checkWord(wordBuffer, word); // on passe a 'wordMatch' le booléen de retour de checkWord() qui vérifie si c'est le bon mot
-            let columns = Array.from(rowsArray[currentRowIndex].children) // Crée un tableau à partir des colonnes de chaque ligne pour changer la couleur selon la validité de la réponse
+            const wordMatch = checkWord(wordBuffer, word); // on passe a 'wordMatch' le booléen de retour de checkWord() qui vérifie si c'est le bon mot
+            const columns = Array.from(rowsArray[currentRowIndex].children) // Crée un tableau à partir des colonnes de chaque ligne pour changer la couleur selon la validité de la réponse
             if (wordMatch){ // si c'est le bon mot alors
                 document.removeEventListener('keyup', fillRow); // on supprime le listener
                 columns.forEach(column => { // on update le background en vert si on trouve
@@ -40,18 +43,19 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
                     column.style.border = "none";
                 });
                 setTimeout(() => { // on attend 1 secondes
-                    alert("Good job, the word of the day was, " + word.toUpperCase() + ", you win! 🎉🎉🎉"); // on affiche une alerte
+                    msg = `Good job, the word of the day was, ${word.toUpperCase()} 🎉🎉🎉`; // on crée un message de succès
+                    alert(msg); // on affiche une alerte contenant le message de succès
                     init(); // on réinitialise le jeu
                 }, 1000);
             } else { // si ce n'est pas le bon mot alors
-                let temp = word.split(""); // on crée un tableau temporaire avec les lettres du mot du jour
+                const temp = word.split(""); // on crée un tableau temporaire avec les lettres du mot du jour
                 for (let i = 0; i < wordBuffer.length; i++) { // on parcours le mot saisi
                     for (let j = 0; j < word.length; j++) { // on parcours en même temps le mot du jour
-                        if (wordBuffer[i] == temp[j]) { // si on trouve des caractères se ressemblant alors
+                        if (wordBuffer[i] === temp[j]) { // si on trouve des caractères se ressemblant alors
                             
                             changeStyle(columns[i], "#b59f3b", "white", "none"); // on update le style de la colonne avec une couleur orange
                             
-                            if (i == j) { // si en plus de se ressembler ils sont à la même position
+                            if (i === j) { // si en plus de se ressembler ils sont à la même position
                                 changeStyle(columns[i], "#538d4e", "white", "none"); // on update le style de la colonne avec une couleur verte
                             }
             
@@ -71,13 +75,15 @@ async function fillRow(e){ // à chaque fois qu'une touche est tapée
                 if (currentRowIndex == 6) { // si on est à la dernière ligne alors
                     document.removeEventListener('keyup', fillRow); // on supprime le listener
                     setTimeout(() => { // on attend 1 secondes
-                        alert("You lose, the word of the day was, " + word.toUpperCase() + " 😡😡😡"); // on affiche une alerte
+                        msg = `You lose, the word of the day was, ${word.toUpperCase()} 😡😡😡`; // on crée un message d'erreur
+                        alert(msg); // on affiche une alerte contenant le message d'erreur
                         init(); // on réinitialise le jeu
                     }, 1000);
                 }
             }
         } else {
-            alert('not a word 😡😡'); // si la réponse n'est pas valide, on affiche une alerte
+            msg = `not a word 😡😡`; // on crée un message d'erreur
+            alert(msg); // si la réponse n'est pas valide, on affiche une alerte contenant le message d'erreur
         }
     }
 
@@ -99,9 +105,9 @@ function clearLast(word) {
 }
 
 // Contrôle de saisie: vérifie si le mot fait 5 lettres et existe sinon il renvoie une erreur.
-function checkRow(wordBuffer, isInputValidated){
+function checkRow(wordTemp, isInputValidated){
 
-    if (wordBuffer.length < 5) { // on vérifie si il a remplie tous les colones, si non
+    if (wordTemp.length < 5) { // on vérifie si il a remplie tous les colones, si non
         alert('not enough letters'); // on renvoie une alerte notifiant qu le nombre de lettre saisies est incomplet
         isInputValidated = false; // et on infirme la validation
     } else { // si on a 5 lettres alors
@@ -112,24 +118,28 @@ function checkRow(wordBuffer, isInputValidated){
 }
 
 // Validation du mot de 5 caractère saisi
-function checkWord(wordBuffer, word) {
+function checkWord(wordTemp, word) {
 
-    isWordOfTheDay = (wordBuffer === word)? true : false; // si le mot saisi et le mot à deviner sont les mêmes, alors isValidated est vraie sinon elle est fausse 
+    isWordOfTheDay = (wordTemp === word)? true : false; // si le mot saisi et le mot à deviner sont les mêmes, alors isValidated est vraie sinon elle est fausse 
     return isWordOfTheDay; // on retourne la valeur de isValidated
 
 }
 
 // Fonction qui permet de réinitialiser le jeu
 function init() {
+
     wordBuffer = ""; // on vide le buffer
     wordArray = []; // on vide le tableau
     currentRowIndex = 0; // on remet l'index de la ligne à 0
     isInputValidated = false; // on remet la validation de la saisie à false
     isWordOfTheDay = false;  // on remet la validation du mot à false
+
 }
 
 // Fonction qui permet de changer le thème
 function darkMode() {
+
+    const columns = document.querySelectorAll('.columns'); // on récupère les colonnes pour le thème sombre
     document.querySelector('#main').classList.toggle('dark'); // on ajoute ou on supprime la classe 'dark' à l'élément 'main'
     const input = document.querySelector('.input'); // on récupère l'input pour le thème sombre
     input.classList.toggle('dark'); // on ajoute ou on supprime la classe 'dark' à l'élément 'input'
@@ -144,6 +154,7 @@ function darkMode() {
     }
 }
 
+// Fonction qui permet de changer le style d'un élément
 function changeStyle(element, backgroundColor, color, border) {
     element.style.backgroundColor = backgroundColor;
     element.style.color = color;
@@ -156,6 +167,5 @@ function changeStyle(element, backgroundColor, color, border) {
 function openKeyboard() {
     const input = document.querySelector('.for_keyboard');
     input.focus();
-    console.log('opened');
 }
 openKeyboard();
