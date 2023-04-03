@@ -1,6 +1,6 @@
-var msg = ""; // on crée un message vide
 const rows = document.querySelectorAll('.rows'); // Nodelist qui représente les lignes ou niveaux
 const rowsArray = Array.from(rows); //  on crée un tableau à partir de rows, ils sont 6 et sont indexés de 0 à 5
+let msg = ""; // on crée un message vide
 let wordBuffer = ""; // on crée un buffer pour stocker les lettres saisies
 let isInputValidated = false; // on crée un booléen pour vérifier si le mot saisi est valide
 let isWordOfTheDay = false; // on crée un booléen pour vérifier si le mot saisi est le mot du jour
