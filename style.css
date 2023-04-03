@@ -159,5 +159,8 @@ input.for_keyboard {
         margin: 1vmin;
         font-size: 10vmin;
     }
+    input.for_keyboard {
+      display: none;
+    }
 }
     
