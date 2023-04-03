@@ -19,7 +19,7 @@
     --invalid-word-border: #ff0000;
 }
 
-input.for_keyboard {
+.for_keyboard {
   display: none;
 }
 /* theme switcher */
@@ -159,7 +159,7 @@ input.for_keyboard {
         margin: 1vmin;
         font-size: 10vmin;
     }
-    input.for_keyboard {
+    .for_keyboard {
       display: none;
     }
 }
